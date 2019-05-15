@@ -3,11 +3,11 @@
 void Engine::Setup()
 {
 	cubes.push_back(Cube{});
-	cubes[0].move({ 0,0,0 });
+	cubes[0].move({ 0,0,-5.0f });
 	cubes.push_back(Cube{});
-	cubes[1].move({ -2.5f,0,0 });
+	cubes[1].move({ -2.5f,0,-5.0f });
 	surfaces.push_back(Surface{});
-	surfaces[0].move({ 2.5f,0,0 });
+	surfaces[0].move({ 2.5f,0,-5.0f });
 }
 
 void Engine::handleEvents(const sf::Event & event)
@@ -16,18 +16,18 @@ void Engine::handleEvents(const sf::Event & event)
 
 void Engine::Update()
 {
-    /*if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-		surface.move({0,0.1f,0});
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+		cubes[0].move({0,0.1f,0});
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-		surface.move({ 0,-0.1f,0 });
+		cubes[0].move({ 0,-0.1f,0 });
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-		surface.move({ -0.1f,0,0 });
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))*/
-	//surfaces[0].move({ 0.1f,0,0 });
-	/*if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-		surface.move({ 0,0,-0.1f });
+		cubes[0].move({ -0.1f,0,0 });
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+		cubes[0].move({ 0.1f,0,0 });
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+		cubes[0].move({ 0,0,-0.1f });
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-		surface.move({ 0,0,0.1f });*/
+		cubes[0].move({ 0,0,0.1f });
 
 	surfaces[0].rotate(0.3f, { 0,1,0 });
 	cubes[0].rotate(0.6f, { 1,1,0 });
@@ -54,9 +54,22 @@ void Engine::setOGLViewport(const sf::Vector2u & size)
 	// calculates proper aspect ratio
 	GLfloat ratio = static_cast<float>(size.x) / size.y;
 	// creates the viewport with the given ratio
-	glFrustum(-ratio, ratio, -1.f, 1.f, 1.f, 500.f);
+	// glFrustum(-ratio, ratio, -1.f, 1.f, 1.f, 500.f);
+	perspectiveGL(90, ratio, 0.1f, 1000.0f);
 
 	// draw only things that fit in the view space
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
+}
+
+void Engine::perspectiveGL(GLdouble fovY, GLdouble aspect, GLdouble zNear, GLdouble zFar)
+{
+	const GLdouble pi = 3.1415926535897932384626433832795;
+	GLdouble fW, fH;
+
+	//fH = tan( (fovY / 2) / 180 * pi ) * zNear;
+	fH = tan(fovY / 360 * pi) * zNear;
+	fW = fH * aspect;
+
+	glFrustum(-fW, fW, -fH, fH, zNear, zFar);
 }

@@ -12,7 +12,7 @@ int main()
 	settings.minorVersion = 1;
 
 	// create the window
-	sf::Window window(sf::VideoMode(800, 600), "OpenGL Engine", sf::Style::Default, settings);
+	sf::Window window(sf::VideoMode(1000, 600), "OpenGL Engine", sf::Style::Default, settings);
 	window.setVerticalSyncEnabled(true); // limit framerate
 
 	Engine engine;

@@ -13,6 +13,7 @@ public:
 	void Compose(); // drawing
 
 	void setOGLViewport(const sf::Vector2u& size);
+	void perspectiveGL(GLdouble fovY, GLdouble aspect, GLdouble zNear, GLdouble zFar);
 private:
 
 	std::vector<Cube> cubes;
